@@ -2,21 +2,30 @@ package com.hrms.EmployeeProfile.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.hrms.EmployeeProfile.entities.ProfileData;
 import com.hrms.EmployeeProfile.interfaces.ProfileServiceInterface;
+import com.hrms.EmployeeProfile.repositories.ProfileRepo;
 
 public class ProfileServiceImpl implements ProfileServiceInterface{
+	
+	@Autowired
+	ProfileRepo profileRepo;
 
 	@Override
 	public ProfileData getEmpProfileByID(int id) {
-		// TODO Auto-generated method stub
+		
+		profileRepo.findById(id);
+		
 		return null;
 	}
 
 	@Override
 	public List<ProfileData> getListOfAllProfiles() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<ProfileData> allProfiles = profileRepo.findAll();
+		return allProfiles;
 	}
 
 	@Override
