@@ -4,23 +4,30 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import com.hrms.EmployeeProfile.dao.Profile;
 import com.hrms.EmployeeProfile.entities.ProfileData;
 import com.hrms.EmployeeProfile.interfaces.ProfileServiceInterface;
 import com.hrms.EmployeeProfile.repositories.ProfileRepo;
 
+
+@Service
 public class ProfileServiceImpl implements ProfileServiceInterface{
 	
 	@Autowired
 	ProfileRepo profileRepo;
 
 	@Override
-	public ProfileData getEmpProfileByID(int id) {
+	public Profile getEmpProfileByID(int id) {
 		
-		profileRepo.findById(id);
+		ProfileData profileData = profileRepo.findById(id).orElse(new ProfileData());
 		
-		return null;
+		Profile profile = this.convertToDto(profileData);
+		
+		return profile;
 	}
 
 	@Override
@@ -45,20 +52,25 @@ public class ProfileServiceImpl implements ProfileServiceInterface{
 	}
 
 	@Override
-	public ProfileData deleteEmployeeProfile(int id) {
+	public ResponseEntity<ProfileData> deleteEmployeeProfile(int id) {
 		
 		ProfileData profileData = profileRepo.findById(id).orElse(null);
 		profileRepo.deleteById(id);
 		// TODO Auto-generated method stub
-		return profileData;
+		return ResponseEntity.ok(profileData);
 	}
 
 	@Override
-	public ProfileData addEmployeeProfile(ProfileData profileData) {
+	public ResponseEntity<ProfileData> addEmployeeProfile(ProfileData profileData) {
 		
 		ProfileData profile = profileRepo.save(profileData);
+		if(profile != null) {
+		return  ResponseEntity.ok(profile);
+			
+		}
+			
 		
-		return profile;
+		return new ResponseEntity<>(profileData,HttpStatus.BAD_REQUEST);
 	}
 	
 	public Profile convertToDto(ProfileData profileData) {
