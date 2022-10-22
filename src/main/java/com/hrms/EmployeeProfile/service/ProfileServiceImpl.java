@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.hrms.EmployeeProfile.dao.Profile;
 import com.hrms.EmployeeProfile.entities.ProfileData;
+import com.hrms.EmployeeProfile.exceptions.ProfileNotExists;
 import com.hrms.EmployeeProfile.interfaces.ProfileServiceInterface;
 import com.hrms.EmployeeProfile.repositories.ProfileRepo;
 
@@ -23,7 +24,8 @@ public class ProfileServiceImpl implements ProfileServiceInterface{
 	@Override
 	public Profile getEmpProfileByID(int id) {
 		
-		ProfileData profileData = profileRepo.findById(id).orElse(new ProfileData());
+		ProfileData profileData = profileRepo.findById(id)
+								  .orElseThrow(()->new ProfileNotExists("Data not availble for id :"+id));
 		
 		Profile profile = this.convertToDto(profileData);
 		
@@ -42,19 +44,21 @@ public class ProfileServiceImpl implements ProfileServiceInterface{
 
 	@Override
 	public ProfileData updateEmployeeProfile(int id, ProfileData profileData) {
-		ProfileData profile = profileRepo.findById(id).orElse( new ProfileData());
+		ProfileData profile = profileRepo.findById(id)
+								.orElseThrow(()->new ProfileNotExists("Data not availble for id :"+id));
 		
 		profile.setId(id);
 		profile.setGender(profileData.getGender());
 		profile.setName(profileData.getName());
 		
-		return null;
+		return profile;
 	}
 
 	@Override
 	public ResponseEntity<ProfileData> deleteEmployeeProfile(int id) {
 		
-		ProfileData profileData = profileRepo.findById(id).orElse(null);
+		ProfileData profileData = profileRepo.findById(id)
+									.orElseThrow(()->new ProfileNotExists("Data not availble for id :"+id));
 		profileRepo.deleteById(id);
 		// TODO Auto-generated method stub
 		return ResponseEntity.ok(profileData);
@@ -67,7 +71,7 @@ public class ProfileServiceImpl implements ProfileServiceInterface{
 		if(profile != null) {
 		return  ResponseEntity.ok(profile);
 			
-		}
+		} 
 			
 		
 		return new ResponseEntity<>(profileData,HttpStatus.BAD_REQUEST);
