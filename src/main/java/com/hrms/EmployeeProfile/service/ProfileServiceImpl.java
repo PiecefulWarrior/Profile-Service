@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,19 @@ public class ProfileServiceImpl implements ProfileServiceInterface{
 	
 	@Autowired
 	ProfileRepo profileRepo;
+	
+	@Value("${exception.profilenotexists}") 
+	String notFound;
+	
+	@Value("${exception.profilealreadyexists}") 
+	String alreadyAvailable;
+	
 
 	@Override
 	public Profile getEmpProfileByID(int id) {
 		
 		ProfileData profileData = profileRepo.findById(id)
-								  .orElseThrow(()->new ProfileNotExists("Data not availble for id :"+id));
+								  .orElseThrow(()->new ProfileNotExists(notFound+id));
 		
 		Profile profile = this.convertToDto(profileData);
 		
@@ -45,7 +53,7 @@ public class ProfileServiceImpl implements ProfileServiceInterface{
 	@Override
 	public ProfileData updateEmployeeProfile(int id, ProfileData profileData) {
 		ProfileData profile = profileRepo.findById(id)
-								.orElseThrow(()->new ProfileNotExists("Data not availble for id :"+id));
+								.orElseThrow(()->new ProfileNotExists(notFound+id));
 		
 		profile.setId(id);
 		profile.setGender(profileData.getGender());
@@ -58,7 +66,7 @@ public class ProfileServiceImpl implements ProfileServiceInterface{
 	public ResponseEntity<ProfileData> deleteEmployeeProfile(int id) {
 		
 		ProfileData profileData = profileRepo.findById(id)
-									.orElseThrow(()->new ProfileNotExists("Data not availble for id :"+id));
+									.orElseThrow(()->new ProfileNotExists(notFound+id));
 		profileRepo.deleteById(id);
 		// TODO Auto-generated method stub
 		return ResponseEntity.ok(profileData);
