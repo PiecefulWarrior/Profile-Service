@@ -2,6 +2,7 @@ package com.hrms.EmployeeProfile.entities;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,13 +27,13 @@ public class ProfileData {
 	@Column
 	String gender;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	Account account;
 	
-	@OneToMany
+	@OneToMany(cascade = CascadeType.ALL)
 	List<Address> address;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	Department department;
 	
 	
