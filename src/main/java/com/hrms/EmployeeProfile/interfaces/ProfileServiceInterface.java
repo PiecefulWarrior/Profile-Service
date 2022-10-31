@@ -15,9 +15,9 @@ public interface ProfileServiceInterface {
 	
 	ProfileData updateEmployeeProfile(int id, ProfileData profileData);
 	
-	ResponseEntity<ProfileData> deleteEmployeeProfile(int id);
+	ProfileData deleteEmployeeProfile(int id);
 	
-	ResponseEntity<ProfileData> addEmployeeProfile(ProfileData profileData);
+	ProfileData addEmployeeProfile(ProfileData profileData);
 
 	
 	

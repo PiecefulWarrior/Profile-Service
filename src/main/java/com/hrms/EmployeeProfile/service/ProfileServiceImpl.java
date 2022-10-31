@@ -63,26 +63,23 @@ public class ProfileServiceImpl implements ProfileServiceInterface{
 	}
 
 	@Override
-	public ResponseEntity<ProfileData> deleteEmployeeProfile(int id) {
+	public ProfileData deleteEmployeeProfile(int id) {
 		
 		ProfileData profileData = profileRepo.findById(id)
 									.orElseThrow(()->new ProfileNotExists(notFound+id));
 		profileRepo.deleteById(id);
 		// TODO Auto-generated method stub
-		return ResponseEntity.ok(profileData);
+		return profileData;
 	}
 
 	@Override
-	public ResponseEntity<ProfileData> addEmployeeProfile(ProfileData profileData) {
+	public ProfileData addEmployeeProfile(ProfileData profileData) {
 		
 		ProfileData profile = profileRepo.save(profileData);
-		if(profile != null) {
-		return  ResponseEntity.ok(profile);
-			
-		} 
+		
 			
 		
-		return new ResponseEntity<>(profileData,HttpStatus.BAD_REQUEST);
+		return profile;
 	}
 	
 	public Profile convertToDto(ProfileData profileData) {
