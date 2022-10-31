@@ -3,6 +3,7 @@ package com.hrms.EmployeeProfile.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,30 +29,38 @@ public class ProfileController {
 	@PostMapping("/addEmp")
 	public ResponseEntity<ProfileData> addEmpData(@RequestBody ProfileData profileData) {
 		
-		return profileServiceImpl.addEmployeeProfile(profileData);
+		ProfileData profile = profileServiceImpl.addEmployeeProfile(profileData);
+		
+		return new ResponseEntity<>(profile,HttpStatus.CREATED);
 	}
 	
 	
 	// fetch APIs for Employee Profiles 
 	@GetMapping("/getEmp")
-	public List<Profile> fetchAllProfiles() {
+	public ResponseEntity<List<Profile>> fetchAllProfiles() {
 		
-		return profileServiceImpl.getListOfAllProfiles();
+		List<Profile> allProfiles = profileServiceImpl.getListOfAllProfiles();
+		
+		return new ResponseEntity<>(allProfiles,HttpStatus.OK);
 		
 	}
 	
 	@GetMapping("/getEmp/{id}")
-	public Profile getProfileByID(@PathVariable("id") int id){
+	public ResponseEntity<Profile> getProfileByID(@PathVariable("id") int id){
 		
-		return profileServiceImpl.getEmpProfileByID(id);
+		Profile profile = profileServiceImpl.getEmpProfileByID(id);
+		
+		return new ResponseEntity<>(profile,HttpStatus.OK);
 	}
 	
 	
 	// Update APIs for Employee Profiles
 	@PutMapping("/updateEmp/{id}")
-	public ProfileData updateEmpData(@PathVariable("id") int id, @RequestBody ProfileData profileData) {
+	public ResponseEntity<ProfileData> updateEmpData(@PathVariable("id") int id, @RequestBody ProfileData profileData) {
 		
-		return profileServiceImpl.updateEmployeeProfile(id, profileData);
+		ProfileData profile = profileServiceImpl.updateEmployeeProfile(id, profileData);
+		
+		return new ResponseEntity<>(profile,HttpStatus.ACCEPTED);
 		
 	}
 	
@@ -60,7 +69,9 @@ public class ProfileController {
 	@DeleteMapping("/deleteEmp/{id}")
 	public ResponseEntity<ProfileData> deleteEmp(@PathVariable("id") int id) {
 		
-		return profileServiceImpl.deleteEmployeeProfile(id);
+		ProfileData profile = profileServiceImpl.deleteEmployeeProfile(id);
+		
+		return new ResponseEntity<ProfileData>(profile,HttpStatus.OK);
 	}
 	
 	
