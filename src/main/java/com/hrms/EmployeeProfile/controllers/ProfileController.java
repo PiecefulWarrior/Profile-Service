@@ -74,5 +74,19 @@ public class ProfileController {
 		return new ResponseEntity<ProfileData>(profile,HttpStatus.OK);
 	}
 	
+	@GetMapping("/getBydepartment/{dept}")
+	public ResponseEntity<Profile> fetchWithDepartment(@PathVariable("dept") String dept){
+		
+		Profile profile = profileServiceImpl.findWithDepartment(dept);
+		
+		return new ResponseEntity<>(profile,HttpStatus.OK);
+	}
 	
+	@GetMapping("/getByname/{name}")
+	public ResponseEntity<Profile> fetchWithCity(@PathVariable("name") String name){
+		
+		Profile profile = profileServiceImpl.findWithName(name);
+		
+		return new ResponseEntity<>(profile,HttpStatus.OK);
+	}
 }
