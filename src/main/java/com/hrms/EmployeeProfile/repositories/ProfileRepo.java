@@ -10,8 +10,8 @@ import com.hrms.EmployeeProfile.entities.ProfileData;
 @Repository
 public interface ProfileRepo extends JpaRepository<ProfileData, Integer> {
 	
-	//	Profile findByDepartment(String dept);
-	//	Profile findByCity(String city);
+		ProfileData findByDepartment(String dept);
+		ProfileData findByName(String name);
 	//	Profile findByName(String name);
 		
 	//	Profile findByGender(String gender);

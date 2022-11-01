@@ -82,6 +82,21 @@ public class ProfileServiceImpl implements ProfileServiceInterface{
 		return profile;
 	}
 	
+	public Profile findWithDepartment(String dept) {
+		
+		ProfileData profileData = profileRepo.findByDepartment(dept);
+		
+		return this.convertToDto(profileData);
+		
+	}
+	
+	public Profile findWithName(String name) {
+		
+		ProfileData profileData = profileRepo.findByName(name);
+		
+		return this.convertToDto(profileData);
+		
+	}
 	public Profile convertToDto(ProfileData profileData) {
 		
 		Profile profile = new Profile();
